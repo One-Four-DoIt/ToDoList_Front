@@ -38,7 +38,7 @@ namespace Manager
             {
                 for (int i = 0; i < taskDict.Count; i++)
                 {
-                    RectTransform taskInstance = Instantiate(ContentsManager.Instance.taskPrefab);
+                    RectTransform taskInstance = Instantiate(ContentsManager.Instance.TaskPrefab);
                     // listDict[newListID].GetTaskDict().Add(taskInstance.gameObject.GetInstanceID(), new TD_Task(/*id, name*/));
                     taskInstance.SetParent(ContentsManager.Instance.TaskContent.transform);
                 }

@@ -12,7 +12,7 @@ public class ObserverBackgroundButton : MonoBehaviour, IObserver
     private GameObject delete;
 
     #region Tag_Task Variables
-    private Toggle taskToggle;
+    private Toggle toggle;
     private bool isSelected = false;
     #endregion
 
@@ -21,11 +21,7 @@ public class ObserverBackgroundButton : MonoBehaviour, IObserver
         Button[] children = GetComponentsInChildren<Button>(true);
         edit = children[children.Length-2].gameObject;
         delete = children[children.Length-1].gameObject;
-
-        if (gameObject.tag == "Tag_Task")
-        {
-            taskToggle = gameObject.GetComponentInChildren<Toggle>();
-        }
+        toggle = GetComponentInChildren<Toggle>();
     }
 
     private void Start()
@@ -44,15 +40,15 @@ public class ObserverBackgroundButton : MonoBehaviour, IObserver
     #region Code Used To Observer Pattern
     public void OnClickActivate()
     {
-        if (isSelected == true && gameObject.tag == "Tag_Task")
+        if (isSelected == true)
         {
-            if (taskToggle.isOn == true)
+            if (toggle.isOn == true)
             {
-                taskToggle.isOn = false;
+                toggle.isOn = false;
             }
             else
             {
-                taskToggle.isOn = true;
+                toggle.isOn = true;
             }
         }
         else

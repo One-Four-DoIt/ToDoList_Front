@@ -39,8 +39,6 @@ namespace Manager
 
         #endregion
 
-        #region USER API
-
         #region Template
         private void SendRequestToServer_<T>(string methodType, string baseURL, RQ_Base requestBody) where T : RP_Base
         {
@@ -65,7 +63,6 @@ namespace Manager
 
                     var responseBodyJSON = www.downloadHandler.text;
                     var responseBody = JsonConvert.DeserializeObject<T>(responseBodyJSON);
-
                 }
                 else
                 {
@@ -77,7 +74,14 @@ namespace Manager
         }
         #endregion
 
-        /*--------------------*/
+
+        #region
+
+
+
+        #endregion
+
+        #region USER API
 
         #region Email
         string email_SendEmailCode = string.Empty;

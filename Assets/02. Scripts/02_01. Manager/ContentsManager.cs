@@ -5,10 +5,15 @@ namespace Manager
 {
     public class ContentsManager : Singleton<ContentsManager>
     {
-        [SerializeField] public RectTransform ListContent { get; private set; }
-        [SerializeField] public RectTransform listPrefab  { get; private set; }
-        [SerializeField] public RectTransform TaskContent { get; private set; }
-        [SerializeField] public RectTransform taskPrefab  { get; private set; }
+        public RectTransform ListContent { get { return listPrefab; } private set { listPrefab = value; } }
+        [SerializeField] private RectTransform listContent;
+        public RectTransform ListPrefab { get { return listPrefab; } private set { listPrefab = value; } }
+        [SerializeField] private RectTransform listPrefab;
+
+        public RectTransform TaskContent { get { return listContent; } private set { listContent = value; } }
+        [SerializeField] private RectTransform taskContent;
+        public RectTransform TaskPrefab { get { return taskPrefab; } private set { taskPrefab = value; } }
+        [SerializeField] private RectTransform taskPrefab;
 
         private void Awake()
         {
@@ -16,9 +21,9 @@ namespace Manager
             SetContentSize(EContentType.Task);
         }
 
-        public void ResizeListContent()
+        public void ResizelistContent()
         {
-            if (0 < ListContent.childCount)
+            if (0 < listContent.childCount)
             {
                 SetContentSize(EContentType.List);
             }
@@ -27,7 +32,7 @@ namespace Manager
 
         public void ResizeTaskContent()
         {
-            if (0 < TaskContent.childCount)
+            if (0 < taskContent.childCount)
             {
                 SetContentSize(EContentType.Task);
             }
@@ -38,10 +43,10 @@ namespace Manager
             switch (contentType)
             {
                 case EContentType.List:
-                    ListContent.sizeDelta = new Vector2(ListContent.sizeDelta.x, ListContent.childCount * (listPrefab.sizeDelta.y + ListContent.gameObject.GetComponent<VerticalLayoutGroup>().spacing));
+                    listContent.sizeDelta = new Vector2(listContent.sizeDelta.x, listContent.childCount * (listPrefab.sizeDelta.y + listContent.gameObject.GetComponent<VerticalLayoutGroup>().spacing));
                     break;
                 case EContentType.Task:
-                    TaskContent.sizeDelta = new Vector2(TaskContent.sizeDelta.x, TaskContent.childCount * (taskPrefab.sizeDelta.y + TaskContent.gameObject.GetComponent<VerticalLayoutGroup>().spacing));
+                    taskContent.sizeDelta = new Vector2(taskContent.sizeDelta.x, taskContent.childCount * (taskPrefab.sizeDelta.y + taskContent.gameObject.GetComponent<VerticalLayoutGroup>().spacing));
                     break;
                 default:
                     Debug.LogError("SetContentSize Error : " + contentType.ToString());
