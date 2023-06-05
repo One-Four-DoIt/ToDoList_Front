@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1045 &1
+EditorBuildSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Scenes:
+  - enabled: 1
+    path: Assets/01. Scenes/SignIgn_Scene.unity
+    guid: 2cda990e2423bbf4892e6590ba056729
+  - enabled: 1
+    path: Assets/01. Scenes/SignUp_Scene.unity
+    guid: 14e59c74316454f4f8a88d91cbc437ec
+  - enabled: 1
+    path: Assets/01. Scenes/ResetPassword_Scene.unity
+    guid: a4ad12d096d77da4e871350ced94af5e
+  - enabled: 1
+    path: Assets/01. Scenes/ToDoList_Scene.unity
+    guid: 14edafa88a927394bb6d8cad37325f37
+  m_configObjects: {}
