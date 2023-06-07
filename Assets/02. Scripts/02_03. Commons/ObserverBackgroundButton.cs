@@ -9,17 +9,17 @@ public class ObserverBackgroundButton : MonoBehaviour, IObserver
     [SerializeField]
     private SubjectBackgroundButton provider;
     private GameObject edit;
+    private GameObject calendar;
     private GameObject delete;
 
-    #region Tag_Task Variables
     private Toggle toggle;
     private bool isSelected = false;
-    #endregion
 
     private void Awake()
     {
         Button[] children = GetComponentsInChildren<Button>(true);
-        edit = children[children.Length-2].gameObject;
+        edit = children[children.Length-3].gameObject;
+        calendar = children[children.Length-2].gameObject;
         delete = children[children.Length-1].gameObject;
         toggle = GetComponentInChildren<Toggle>();
     }
@@ -28,14 +28,6 @@ public class ObserverBackgroundButton : MonoBehaviour, IObserver
     {
         provider.ResisterObserver(this);
     }
-
-    // Test Function
-    //public void OnClickSendListButtonID()
-    //{
-    //    ToDoManager.Instance.ListActivateTasks();
-    //}
-
-
 
     #region Code Used To Observer Pattern
     public void OnClickActivate()
@@ -57,6 +49,7 @@ public class ObserverBackgroundButton : MonoBehaviour, IObserver
         }
 
         edit.SetActive(true);
+        calendar.SetActive(true);
         delete.SetActive(true);
         SetMainButtonData(gameObject);
     }
@@ -72,6 +65,7 @@ public class ObserverBackgroundButton : MonoBehaviour, IObserver
         if (gameObject.GetInstanceID() != mainGameObject.GetInstanceID())
         {
             edit.gameObject.SetActive(false);
+            calendar.gameObject.SetActive(false);
             delete.gameObject.SetActive(false);
             isSelected = false;
         }

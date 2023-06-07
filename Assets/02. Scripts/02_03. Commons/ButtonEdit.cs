@@ -5,18 +5,17 @@ using UnityEngine.UI;
 public class ButtonEdit : MonoBehaviour
 {
     [SerializeField] private GameObject edit;
+    [SerializeField] private GameObject calendar;
     [SerializeField] private GameObject delete;
 
-    private InputField inputField;
-    private Text[] inputFieldChildren;
+    private InputField[] inputFields;
 
     private readonly int PLACEHOLDER = 0;
     private readonly int NAME        = 1;
 
     private void Awake()
     {
-        inputField = transform.parent.GetComponentInChildren<InputField>();
-        inputFieldChildren = inputField.transform.GetComponentsInChildren<Text>();
+        inputFields = transform.parent.GetComponentsInChildren<InputField>();
     }
 
     private void Start()
@@ -27,8 +26,8 @@ public class ButtonEdit : MonoBehaviour
     public void OnClickEdit()
     {
         propertyActivate(true);
-        EventSystem.current.SetSelectedGameObject(inputField.gameObject);
-        inputField.OnPointerClick(new PointerEventData(EventSystem.current));
+        EventSystem.current.SetSelectedGameObject(inputFields[0].gameObject);
+        inputFields[0].OnPointerClick(new PointerEventData(EventSystem.current));
     }
 
     public void OnEndEdit()
@@ -37,15 +36,21 @@ public class ButtonEdit : MonoBehaviour
         {
             propertyActivate(false);
             edit.SetActive(false);
+            calendar.SetActive(false);
             delete.SetActive(false);
         }
     }
 
     private void propertyActivate(bool boolean)
     {
-        inputField.interactable = boolean;
-        inputField.shouldActivateOnSelect = boolean;
-        inputFieldChildren[PLACEHOLDER].raycastTarget = boolean;
-        inputFieldChildren[NAME].raycastTarget = boolean;
+        foreach (var item in inputFields)
+        {
+            item.interactable = boolean;
+            item.shouldActivateOnSelect = boolean;
+
+            var inputFieldChildren = item.transform.GetComponentsInChildren<Text>();
+            inputFieldChildren[PLACEHOLDER].raycastTarget = boolean;
+            inputFieldChildren[NAME].raycastTarget = boolean;
+        }
     }
 }

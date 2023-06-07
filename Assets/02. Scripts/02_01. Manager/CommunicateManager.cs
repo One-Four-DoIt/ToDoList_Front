@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Networking;
+using static UnityEditor.Timeline.TimelinePlaybackControls;
 
 namespace Manager
 {
@@ -31,11 +32,11 @@ namespace Manager
 
         #region Common Method
 
-        private string EmailToQueryParameter(string email)
-        {
-            string queryParam = $"?email={UnityWebRequest.EscapeURL(email)}";
-            return queryParam;
-        }
+        private string GetAccessToken(string key) => PlayerPrefs.GetString(key);
+
+        private string GetRefreshToken(string key) => PlayerPrefs.GetString(key);
+
+        private string EmailToQueryParameter(string email) => $"?email={UnityWebRequest.EscapeURL(email)}"; // queryParam
 
         #endregion
 
@@ -74,10 +75,60 @@ namespace Manager
         }
         #endregion
 
+        #region TASK API
+
+        #endregion
+
+        #region TODO API
 
         #region
+        private string listName = string.Empty;
+        private string deadline = string.Empty;
 
+        public void CreateList()
+        {
+            var requestBody = new RQ_CreateList(listName, deadline);
+            SendRequestToServer_CreateList(POST, IP_ADDRESS_TODO, requestBody);
+        }
 
+        public void SetListName(InputField inputField) => listName = UnityWebRequest.EscapeURL(inputField.text);
+
+        public void SetDeadline(InputField inputField) => deadline = UnityWebRequest.EscapeURL(inputField.text);
+
+        private void SendRequestToServer_CreateList(string methodType, string baseURL, RQ_Base requestBody)
+        {
+            StartCoroutine(SendRequestCoroutine_CreateList(methodType, baseURL, requestBody));
+        }
+
+        private IEnumerator SendRequestCoroutine_CreateList(string methodType, string baseURL, RQ_Base requestBody)
+        {
+            string requestURL = $"{baseURL}post/";
+            string jsonText = JsonConvert.SerializeObject(requestBody);
+
+            using (www = UnityWebRequest.PostWwwForm(requestURL, methodType.ToString()))
+            {
+                www.SetRequestHeader("Content-Type", "application/json");
+                www.uploadHandler = new UploadHandlerRaw(System.Text.Encoding.UTF8.GetBytes(jsonText));
+
+                yield return www.SendWebRequest();
+
+                if (www.result == UnityWebRequest.Result.Success)
+                {
+                    Debug.Log(www.result.ToString());
+
+                    // var responseBodyJSON = www.downloadHandler.text;
+                    // var responseBody = JsonConvert.DeserializeObject<T>(responseBodyJSON);
+                }
+                else
+                {
+                    Debug.Log($"{www.result}\n{www.error}");
+                }
+
+                www.Dispose();
+            }
+        }
+
+        #endregion
 
         #endregion
 
@@ -149,9 +200,10 @@ namespace Manager
 
         private IEnumerator SendRequestCoroutine_CheckEmailDuplicated<T>(string methodType, string baseURL) where T : RP_Base
         {
-            string requestURL = $"{baseURL}{EmailToQueryParameter(email_CheckEmailDuplicated)}";
+            string queryParameter = EmailToQueryParameter(email_CheckEmailDuplicated);
+            string requestURL = $"{baseURL}{queryParameter}";
 
-            using (UnityWebRequest www = UnityWebRequest.Get(requestURL))
+            using (www = UnityWebRequest.Get(requestURL))
             {
                 yield return www.SendWebRequest();
 
