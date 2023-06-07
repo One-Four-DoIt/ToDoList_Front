@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEditor;
 
 namespace UI.Dates
 {
@@ -17,6 +18,7 @@ namespace UI.Dates
 
             if (tmp != null)
             {
+                tmp.font = AssetDatabase.LoadAssetAtPath<TMP_FontAsset>("Assets/UI/DatePicker/Fonts/NANUMGOTHICCODING SDF.asset");
                 DatePicker_TextMeshProUtilities.ApplyDefaultTextMeshProProperties(tmp);
             }
 
