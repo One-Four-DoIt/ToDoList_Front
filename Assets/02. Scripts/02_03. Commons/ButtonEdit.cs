@@ -36,7 +36,10 @@ public class ButtonEdit : MonoBehaviour
         {
             propertyActivate(false);
             edit.SetActive(false);
-            calendar.SetActive(false);
+            if(tag == "Tag_List")
+            {
+                calendar.SetActive(false);
+            }
             delete.SetActive(false);
         }
     }

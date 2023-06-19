@@ -1,55 +1,42 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Unity.UI;
-using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 namespace Manager
 {
     public class ToDoManager : Singleton<ToDoManager>
     {
-        private Dictionary<int, List_JSON> listDict;
-        private int curListID = 0;
+        [SerializeField] private Text taskCountText;
+
+        public List_JSON currListObject { get; private set; }
+        public Dictionary<int, List_JSON> ListDict { get; private set; }
+        public SDictionary<int, Task_JSON> TaskDict { get; private set; }
+        public readonly int MAX_ID_SIZE = 64;
 
         private void Awake()
         {
-            listDict = new Dictionary<int, List_JSON>();
+            ListDict = new Dictionary<int, List_JSON>();
         }
 
-        public void ListActivateTasks(int newListID)
+        public void OnClickCreateList()
         {
-            // 클릭한 list가 현재 list인지 확인
-            if (curListID == newListID)
-            {
-                return;
-            }
+            ContentsManager.Instance.CreateList();
+        }
 
-            // 현재 활성화된 task들을 비활성화
-            Dictionary<int, Task_JSON> taskDict = listDict[curListID].GetTaskDict();
-            for (int index = 0; index < taskDict.Count; index++)
-            {
-                ContentsManager.Instance.TaskContent.GetChild(index).gameObject.SetActive(false);
-            }
-            listDict[curListID].IsActive = false;
-            
-            // 클릭한 list의 task들을 활성화 또는 생성
-            taskDict = listDict[newListID].GetTaskDict();
-            if (listDict[newListID].IsCreate == false)
-            {
-                for (int i = 0; i < taskDict.Count; i++)
-                {
-                    RectTransform taskInstance = Instantiate(ContentsManager.Instance.TaskPrefab);
-                    // listDict[newListID].GetTaskDict().Add(taskInstance.gameObject.GetInstanceID(), new TD_Task(/*id, name*/));
-                    taskInstance.SetParent(ContentsManager.Instance.TaskContent.transform);
-                }
-                listDict[newListID].IsActive = true;
-            }
-            else
-            {
-                
-            }
+        public void OnClickCreateTask()
+        {
+            ContentsManager.Instance.CreateTask();
+        }
 
-            curListID = newListID;
+        public void SetCurrentListObject(List_JSON listObject)
+        {
+            currListObject = listObject;
+        }
+
+        public void SetCurrentTaskDictionay(SDictionary<int, Task_JSON> taskDict)
+        {
+            TaskDict = taskDict;
         }
     }
 }
